@@ -15,6 +15,8 @@
             name="search"
             placeholder="Username..."
             class="py-2.5 pl-4 border-2 rounded-full"
+            v-model="search"
+            @input="setSearch()"
           />
           <svg
             class="absolute top-[30%] right-[17px]"
@@ -74,12 +76,16 @@ import SIdebar from "./SIdebar.vue";
 import AuthBtn from "./AuthBtn.vue";
 export default {
   data() {
-    return {};
+    return {
+      search: "",
+    };
   },
   methods: {
     showHideSidebar() {
       this.$store.commit("showHideSidebar");
-      console.log("works");
+    },
+    setSearch() {
+      this.$store.commit("SEARCH_USERS", this.search);
     },
   },
   computed: {

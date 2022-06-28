@@ -123,7 +123,13 @@ export default {
   },
   computed: {
     users() {
-      return this.$store.getters.USERS;
+      return this.$store.getters.USERS.filter((user) => {
+        console.log(user.name);
+        return user.name.toLowerCase().includes(this.search);
+      });
+    },
+    search() {
+      return this.$store.state.search;
     },
   },
   components: {},

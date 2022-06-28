@@ -3,7 +3,8 @@ import axios from 'axios'
 export const state = () => ({
   isSidebarOpened: false,
   users: [],
-  paginatedUsers: []
+  paginatedUsers: [],
+  search: ''
 });
 
 export const mutations = {
@@ -15,6 +16,9 @@ export const mutations = {
   },
   SET_PAGINATED_USERS: (state, paginatedUsers) => {
     state.paginatedUsers = paginatedUsers
+  },
+  SEARCH_USERS: (state, search) => {
+    state.search = search
   }
 }
 
