@@ -1,5 +1,5 @@
 <template>
-  <div class="overlay w-screen h-screen fixed top-0 left-0"></div>
+  <div class="overlay w-screen h-screen fixed top-0 left-0 z-10"></div>
 </template>
 
 <script>

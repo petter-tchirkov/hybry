@@ -63,19 +63,23 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar {
+  z-index: 1000;
   .selected {
     color: #5e58d6;
     border-bottom: 2px solid #5e58d6;
   }
-  &-enter-active,
+  &-enter-active {
+    transition: all 0.2s ease-in-out;
+  }
   &-leave-active {
-    transition: all 0.3s ease-in-out;
+    transition: all 0.2s ease-in-out;
   }
 
-  &-enter,
+  &-enter-from {
+    transform: translateX(-300px);
+  }
   &-leave-to {
     transform: translateX(300px);
-    opacity: 0;
   }
 }
 </style>

@@ -1,6 +1,12 @@
 <template>
-  <div class="header__container px-[15px] lg:px-[50px]">
-    <header class="header py-2 lg:py-7 flex items-center justify-between">
+  <div
+    class="header__container px-[15px] lg:px-[50px] z-10"
+    :class="{ 'sticky w-full bg-white top-0 left-0': !topOfPage }"
+  >
+    <header
+      class="header py-2 lg:py-7 flex items-center justify-between"
+      :class="{ 'py-1 lg:py-1': !topOfPage }"
+    >
       <div class="header__logo w-1/3">
         <h1 class="text-orange">HYBRY</h1>
       </div>
@@ -78,9 +84,20 @@ export default {
   data() {
     return {
       search: "",
+      topOfPage: true,
     };
   },
+  beforeMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
   methods: {
+    handleScroll() {
+      if (window.pageYOffset > 0) {
+        if (this.topOfPage) this.topOfPage = false;
+      } else {
+        if (!this.topOfPage) this.topOfPage = true;
+      }
+    },
     showHideSidebar() {
       this.$store.commit("showHideSidebar");
     },
@@ -99,8 +116,19 @@ export default {
 
 <style lang="scss" scoped>
 .header {
+  transition: all 0.2s ease-in-out;
   &__container {
     border-bottom: 1px solid #f2f2f2;
+  }
+  &__container.sticky {
+    .header__nav {
+      transition: all 0.2s ease-in-out;
+      p {
+        &::before {
+          display: none;
+        }
+      }
+    }
   }
   &__logo {
     h1 {

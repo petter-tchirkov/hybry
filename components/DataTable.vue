@@ -1,22 +1,27 @@
 <template>
   <div class="table-component">
-    <div class="menu mb-4 flex justify-between">
-      <div class="menu__left flex">
-        <div class="menu__sort w-[242px] flex mr-5">
+    <div
+      class="menu mb-4 flex justify-center lg:justify-between flex-wrap bg-white z-10"
+      :class="{
+        'sticky mb-0 pb-4 w-full bg-white top-[56px] left-0': !topOfPage,
+      }"
+    >
+      <div class="menu__left flex flex-wrap lg:justify-start mb-4 lg:mb-0">
+        <div class="menu__sort w-full flex-1 lg:w-[242px] flex lg:mr-5">
           <div
-            class="sort__all px-7 py-3 border-r border-[#c7c6ca] bg-[#F1F1F3] cursor-pointer"
+            class="sort__all flex-grow px-7 py-3 border-r border-[#c7c6ca] bg-[#F1F1F3] cursor-pointer"
             @click="all = true"
           >
             <p>All NFTs</p>
           </div>
           <div
-            class="sort__wish px-7 py-3 cursor-pointer"
+            class="sort__wish flex-grow px-7 py-3 cursor-pointer"
             @click="(all = false), addToWatchList()"
           >
             <p>Watchlist</p>
           </div>
         </div>
-        <div class="menu__metrics relative">
+        <div class="menu__metrics relative hidden lg:flex">
           <div
             class="metric w-[230px] px-4 py-3 flex justify-between items-center cursor-pointer"
             @click="isDropdownShown = !isDropdownShown"
@@ -40,7 +45,7 @@
             v-show="isDropdownShown"
             @blur="isDropdownShown === false"
           >
-            <div class="metric__row mb-2.5">
+            <div class="metric__row mb-2.5" @click="selected === ''">
               <input
                 class="mr-2"
                 type="checkbox"
@@ -90,8 +95,28 @@
           </div>
         </div>
       </div>
-      <div class="menu__right flex items-center">
-        <div class="pagination flex items-center mr-8">
+      <div
+        class="menu__right flex items-center justify-between w-full lg:w-auto"
+      >
+        <div class="menu-mobile__metrics relative flex lg:hidden">
+          <div class="metrics-mobile__dropdown">
+            <select
+              name="metrics"
+              id="metrics"
+              v-model="selected"
+              class="w-[205px] px-4 py-3 flex justify-between items-center cursor-pointer capitalize"
+            >
+              <option
+                v-for="metric in metrics"
+                :key="metric.text"
+                :value="metric.text"
+              >
+                {{ metric.text }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="pagination flex items-center lg:mr-8">
           <svg
             width="10"
             height="10"
@@ -123,33 +148,106 @@
               fill="#677D80"
             />
           </svg>
-        </div>
-        <div class="refresh flex items-center">
-          <button>
-            <svg
-              width="14"
-              height="16"
-              viewBox="0 0 14 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9.254 0.665978H4.746C3.62081 0.667827 2.5422 1.11549 1.74637 1.91094C0.950552 2.70639 0.50238 3.78478 0.5 4.90998V8.61598C0.5 8.95598 0.778 9.23298 1.117 9.23298C1.28057 9.23245 1.4373 9.16731 1.55306 9.05174C1.66881 8.93617 1.73421 8.77955 1.735 8.61598V4.90998C1.73606 4.11607 2.05197 3.355 2.61345 2.79372C3.17492 2.23243 3.93609 1.91677 4.73 1.91598H9.223C10.906 1.91598 12.249 3.25898 12.249 4.91098V8.15398C12.2482 8.94806 11.9324 9.70939 11.3709 10.2709C10.8094 10.8324 10.0481 11.1482 9.254 11.149H3.681L5.549 9.28098C5.60766 9.22369 5.65427 9.15526 5.6861 9.07969C5.71792 9.00413 5.73432 8.92297 5.73432 8.84098C5.73432 8.75899 5.71792 8.67782 5.6861 8.60226C5.65427 8.5267 5.60766 8.45826 5.549 8.40098C5.49172 8.34232 5.42328 8.2957 5.34772 8.26388C5.27215 8.23205 5.19099 8.21566 5.109 8.21566C5.02701 8.21566 4.94585 8.23205 4.87028 8.26388C4.79472 8.2957 4.72628 8.34232 4.669 8.40098L1.735 11.334C1.67634 11.3913 1.62973 11.4597 1.5979 11.5353C1.56607 11.6108 1.54968 11.692 1.54968 11.774C1.54968 11.856 1.56607 11.9371 1.5979 12.0127C1.62973 12.0883 1.67634 12.1567 1.735 12.214L4.669 15.148C4.72724 15.2073 4.79684 15.2542 4.87365 15.286C4.95045 15.3178 5.03288 15.3338 5.116 15.333C5.28373 15.332 5.44446 15.2656 5.564 15.148C5.62266 15.0907 5.66927 15.0223 5.7011 14.9467C5.73292 14.8711 5.74932 14.79 5.74932 14.708C5.74932 14.626 5.73292 14.5448 5.7011 14.4693C5.66927 14.3937 5.62266 14.3253 5.564 14.268L3.681 12.4H9.254C9.8117 12.4004 10.364 12.2908 10.8793 12.0776C11.3947 11.8643 11.8629 11.5516 12.2573 11.1572C12.6516 10.7629 12.9644 10.2946 13.1776 9.77932C13.3908 9.26399 13.5004 8.71168 13.5 8.15398V4.90998C13.4979 3.78461 13.0498 2.70596 12.254 1.91029C11.4581 1.11463 10.3794 0.666828 9.254 0.664978V0.665978Z"
-                fill="#677D80"
-              />
-            </svg>
-          </button>
+          <div class="refresh flex items-center ml-5" @click="forceUpdate()">
+            <button>
+              <svg
+                width="14"
+                height="16"
+                viewBox="0 0 14 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M9.254 0.665978H4.746C3.62081 0.667827 2.5422 1.11549 1.74637 1.91094C0.950552 2.70639 0.50238 3.78478 0.5 4.90998V8.61598C0.5 8.95598 0.778 9.23298 1.117 9.23298C1.28057 9.23245 1.4373 9.16731 1.55306 9.05174C1.66881 8.93617 1.73421 8.77955 1.735 8.61598V4.90998C1.73606 4.11607 2.05197 3.355 2.61345 2.79372C3.17492 2.23243 3.93609 1.91677 4.73 1.91598H9.223C10.906 1.91598 12.249 3.25898 12.249 4.91098V8.15398C12.2482 8.94806 11.9324 9.70939 11.3709 10.2709C10.8094 10.8324 10.0481 11.1482 9.254 11.149H3.681L5.549 9.28098C5.60766 9.22369 5.65427 9.15526 5.6861 9.07969C5.71792 9.00413 5.73432 8.92297 5.73432 8.84098C5.73432 8.75899 5.71792 8.67782 5.6861 8.60226C5.65427 8.5267 5.60766 8.45826 5.549 8.40098C5.49172 8.34232 5.42328 8.2957 5.34772 8.26388C5.27215 8.23205 5.19099 8.21566 5.109 8.21566C5.02701 8.21566 4.94585 8.23205 4.87028 8.26388C4.79472 8.2957 4.72628 8.34232 4.669 8.40098L1.735 11.334C1.67634 11.3913 1.62973 11.4597 1.5979 11.5353C1.56607 11.6108 1.54968 11.692 1.54968 11.774C1.54968 11.856 1.56607 11.9371 1.5979 12.0127C1.62973 12.0883 1.67634 12.1567 1.735 12.214L4.669 15.148C4.72724 15.2073 4.79684 15.2542 4.87365 15.286C4.95045 15.3178 5.03288 15.3338 5.116 15.333C5.28373 15.332 5.44446 15.2656 5.564 15.148C5.62266 15.0907 5.66927 15.0223 5.7011 14.9467C5.73292 14.8711 5.74932 14.79 5.74932 14.708C5.74932 14.626 5.73292 14.5448 5.7011 14.4693C5.66927 14.3937 5.62266 14.3253 5.564 14.268L3.681 12.4H9.254C9.8117 12.4004 10.364 12.2908 10.8793 12.0776C11.3947 11.8643 11.8629 11.5516 12.2573 11.1572C12.6516 10.7629 12.9644 10.2946 13.1776 9.77932C13.3908 9.26399 13.5004 8.71168 13.5 8.15398V4.90998C13.4979 3.78461 13.0498 2.70596 12.254 1.91029C11.4581 1.11463 10.3794 0.666828 9.254 0.664978V0.665978Z"
+                  fill="#677D80"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
     </div>
     <table class="datatable w-full" v-if="all">
-      <thead class="datatable__header">
+      <thead
+        class="datatable__header relative z-10"
+        :class="{
+          'sticky w-full bg-white top-[116px] left-0 border-b': !topOfPage,
+        }"
+      >
         <th class="py-[15px] text-left">#</th>
         <th class="py-[15px] text-left">Name</th>
-        <th class="py-[15px] text-left" v-if="followers">Followers</th>
-        <th class="py-[15px] text-center" v-if="audience">Audience Quality</th>
-        <th class="py-[15px] text-center" v-if="socials">Social mentions</th>
-        <th class="py-[15px] text-center" v-if="influencers">Influencers</th>
+        <th
+          class="py-[15px] text-right lg:text-left flex items-center"
+          v-if="followers || selected === 'followers'"
+        >
+          <span class="mr-2" @click="sortByFollowers()">Followers</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
+        <th
+          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          v-if="audience || selected === 'audience quality'"
+        >
+          <span class="mr-2" @click="sortByAudience()">Audience Quality</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
+        <th
+          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          v-if="socials || selected === 'social mentions'"
+        >
+          <span class="mr-2" @click="sortBySocials()">Social Mentions</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
+        <th
+          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          v-if="influencers || selected === 'influencers'"
+        >
+          <span class="mr-2" @click="sortByInfluencers()">Influencers</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
       </thead>
       <tr
         v-for="row in paginatedUsers"
@@ -162,7 +260,11 @@
         </td>
         <td class="flex gap-2.5">
           <div class="datatable__avatar">
-            <img :src="require('../assets/images/' + row.image)" alt="" />
+            <img
+              class="object-cover"
+              :src="require('../assets/images/' + row.image)"
+              alt=""
+            />
           </div>
           <div class="datatable__name">
             <p>{{ row.name }}</p>
@@ -170,8 +272,8 @@
           </div>
         </td>
         <td
-          class="datatable__followers flex items-center gap-6"
-          v-if="followers"
+          class="datatable__followers flex items-center gap-6 flex-row-reverse lg:flex-row"
+          v-if="followers || selected === 'followers'"
         >
           <p class="py-2 px-4 text-white">{{ row.followers }}</p>
           <span class="flex text-[#69B18C] text-sm items-center gap-2">
@@ -189,24 +291,24 @@
           </span>
         </td>
         <td
-          class="text-orange text-lg leading-6 flex justify-center items-center font-extrabold"
-          v-if="audience"
+          class="text-orange text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          v-if="audience || selected === 'audience quality'"
         >
           {{ row.audience_quality }}%
         </td>
         <td
-          class="text-violet text-lg leading-6 flex justify-center items-center font-extrabold"
-          v-if="socials"
+          class="text-violet text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          v-if="socials || selected === 'social mentions'"
         >
           {{ row.social_mentions }}
         </td>
         <td
-          class="text-violet text-lg leading-6 flex justify-center items-center font-extrabold"
-          v-if="influencers"
+          class="text-violet text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          v-if="influencers || selected === 'influencers'"
         >
           {{ row.influencers }}
         </td>
-        <td class="flex gap-4">
+        <td class="lg:flex gap-4 hidden">
           <a
             :href="row.discord"
             class="discord border rounded-3xl flex gap-3 items-center px-8 py-3"
@@ -251,13 +353,86 @@
       </tr>
     </table>
     <table class="watchlist w-full" v-if="!all">
-      <thead class="datatable__header">
+      <thead
+        class="datatable__header z-10"
+        :class="{
+          'sticky w-full bg-white top-[116px] left-0 border-b': !topOfPage,
+        }"
+      >
         <th class="py-[15px] text-left">#</th>
         <th class="py-[15px] text-left">Name</th>
-        <th class="py-[15px] text-left" v-if="followers">Followers</th>
-        <th class="py-[15px] text-center" v-if="audience">Audience Quality</th>
-        <th class="py-[15px] text-center" v-if="socials">Social mentions</th>
-        <th class="py-[15px] text-center" v-if="influencers">Influencers</th>
+        <th
+          class="py-[15px] text-right lg:text-left flex items-center"
+          v-if="followers || selected === 'followers'"
+        >
+          <span class="mr-2" @click="sortByFollowers()">Followers</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
+        <th
+          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          v-if="audience || selected === 'audience quality'"
+        >
+          <span class="mr-2" @click="sortByAudience()">Audience Quality</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
+        <th
+          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          v-if="socials || selected === 'social mentions'"
+        >
+          <span class="mr-2" @click="sortBySocials()">Social Mentions</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
+        <th
+          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          v-if="influencers || selected === 'influencers'"
+        >
+          <span class="mr-2" @click="sortByInfluencers()">Influencers</span>
+          <svg
+            width="11"
+            height="8"
+            viewBox="0 0 11 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M10.2458 1.1675C10.0584 0.981251 9.80498 0.876709 9.5408 0.876709C9.27661 0.876709 9.02316 0.981251 8.8358 1.1675L5.2458 4.7075L1.7058 1.1675C1.51844 0.981251 1.26498 0.876709 1.0008 0.876709C0.736612 0.876709 0.483161 0.981251 0.295798 1.1675C0.20207 1.26046 0.127675 1.37107 0.0769067 1.49292C0.026138 1.61478 0 1.74549 0 1.8775C0 2.00951 0.026138 2.14022 0.0769067 2.26208C0.127675 2.38394 0.20207 2.49454 0.295798 2.5875L4.5358 6.8275C4.62876 6.92123 4.73936 6.99562 4.86122 7.04639C4.98308 7.09716 5.11379 7.1233 5.2458 7.1233C5.37781 7.1233 5.50852 7.09716 5.63037 7.04639C5.75223 6.99562 5.86283 6.92123 5.9558 6.8275L10.2458 2.5875C10.3395 2.49454 10.4139 2.38394 10.4647 2.26208C10.5155 2.14022 10.5416 2.00951 10.5416 1.8775C10.5416 1.74549 10.5155 1.61478 10.4647 1.49292C10.4139 1.37107 10.3395 1.26046 10.2458 1.1675Z"
+              fill="#242424"
+            />
+          </svg>
+        </th>
       </thead>
       <tr
         v-for="row in watchList"
@@ -278,8 +453,8 @@
           </div>
         </td>
         <td
-          class="datatable__followers flex items-center gap-6"
-          v-if="followers"
+          class="datatable__followers flex items-center gap-6 flex-row-reverse lg:flex-row"
+          v-if="followers || selected === 'followers'"
         >
           <p class="py-2 px-4 text-white">{{ row.followers }}</p>
           <span class="flex text-[#69B18C] text-sm items-center gap-2">
@@ -297,24 +472,24 @@
           </span>
         </td>
         <td
-          class="text-orange text-lg leading-6 flex justify-center items-center font-extrabold"
-          v-if="audience"
+          class="text-orange text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          v-if="audience || selected === 'audience quality'"
         >
           {{ row.audience_quality }}%
         </td>
         <td
-          class="text-violet text-lg leading-6 flex justify-center items-center font-extrabold"
-          v-if="socials"
+          class="text-violet text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          v-if="socials || selected === 'social mentions'"
         >
           {{ row.social_mentions }}
         </td>
         <td
-          class="text-violet text-lg leading-6 flex justify-center items-center font-extrabold"
-          v-if="influencers"
+          class="text-violet text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          v-if="influencers || selected === 'influencers'"
         >
           {{ row.influencers }}
         </td>
-        <td class="flex gap-4">
+        <td class="hidden lg:flex gap-4">
           <a
             :href="row.discord"
             class="discord border rounded-3xl flex gap-3 items-center px-8 py-3"
@@ -371,10 +546,18 @@ export default {
       audience: true,
       socials: true,
       influencers: true,
+      selected: "",
       all: true,
       watchList: [],
       perPage: 20,
       currentPage: 1,
+      topOfPage: true,
+      metrics: [
+        { text: "followers", value: true },
+        { text: "audience quality", value: false },
+        { text: "social mentions", value: false },
+        { text: "influencers", value: false },
+      ],
     };
   },
   methods: {
@@ -388,9 +571,51 @@ export default {
     prevPage(currentPage) {
       this.currentPage--;
     },
+    onResize() {
+      if (window.innerWidth < 960) {
+        (this.selected = "followers"),
+          (this.followers = false),
+          (this.audience = false),
+          (this.socials = false),
+          (this.influencers = false);
+      }
+    },
+    forceUpdate() {
+      console.log("updated");
+      this.$forceUpdate();
+    },
+    sortByFollowers() {
+      this.paginatedUsers.sort((a, b) => b.followers - a.followers);
+      this.$forceUpdate();
+    },
+    sortByAudience() {
+      this.paginatedUsers.sort(
+        (a, b) => b.audience_quality - a.audience_quality
+      );
+      this.$forceUpdate();
+    },
+    sortBySocials() {
+      this.paginatedUsers.sort((a, b) => b.social_mentions - a.social_mentions);
+      this.$forceUpdate();
+    },
+    sortByInfluencers() {
+      this.paginatedUsers.sort((a, b) => b.influencers - a.influencers);
+      this.$forceUpdate();
+    },
+    handleScroll() {
+      if (window.pageYOffset > 216) {
+        if (this.topOfPage) this.topOfPage = false;
+      } else {
+        if (!this.topOfPage) this.topOfPage = true;
+      }
+    },
+  },
+  beforeMount() {
+    window.addEventListener("scroll", this.handleScroll);
   },
   mounted() {
     this.GET_USERS();
+    this.onResize();
   },
   computed: {
     users() {
@@ -490,6 +715,19 @@ export default {
     &__dropdown {
       border: 1px solid #c7c6ca;
       border-radius: 7px;
+    }
+  }
+  select {
+    border: 1px solid #c7c6ca;
+    border-radius: 7px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .datatable {
+    &__row,
+    &__header {
+      grid-template-columns: 62px 1fr 1fr;
     }
   }
 }
