@@ -43,6 +43,15 @@ export default {
     '@nuxtjs/axios'
   ],
 
+  axios: {
+    baseURL: 'https://25c5-45-136-51-226.eu.ngrok.io/api',
+    headers: {
+      'Access-Control-Allow-Origin' : '*',
+      'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    },
+    withCredentials: false,
+  },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     postcss: {
