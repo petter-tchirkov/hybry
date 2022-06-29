@@ -98,21 +98,25 @@
             viewBox="0 0 10 10"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            class="mr-4"
+            class="mr-4 cursor-pointer"
+            @click="prevPage()"
           >
             <path
               d="M8.74992 4.25002H3.05742L5.53242 1.78252C5.67365 1.64129 5.75299 1.44974 5.75299 1.25002C5.75299 1.05029 5.67365 0.858745 5.53242 0.717517C5.39119 0.576289 5.19965 0.496948 4.99992 0.496948C4.8002 0.496948 4.60865 0.576289 4.46742 0.717517L0.717422 4.46752C0.649142 4.53885 0.595618 4.62295 0.559922 4.71502C0.484909 4.89761 0.484909 5.10242 0.559922 5.28502C0.595618 5.37708 0.649142 5.46119 0.717422 5.53252L4.46742 9.28252C4.53714 9.35281 4.6201 9.40861 4.71149 9.44669C4.80288 9.48476 4.90091 9.50437 4.99992 9.50437C5.09893 9.50437 5.19696 9.48476 5.28835 9.44669C5.37975 9.40861 5.4627 9.35281 5.53242 9.28252C5.60272 9.21279 5.65851 9.12984 5.69659 9.03845C5.73467 8.94706 5.75427 8.84903 5.75427 8.75002C5.75427 8.65101 5.73467 8.55298 5.69659 8.46158C5.65851 8.37019 5.60272 8.28724 5.53242 8.21752L3.05742 5.75002H8.74992C8.94883 5.75002 9.1396 5.671 9.28025 5.53035C9.42091 5.3897 9.49992 5.19893 9.49992 5.00002C9.49992 4.80111 9.42091 4.61034 9.28025 4.46969C9.1396 4.32904 8.94883 4.25002 8.74992 4.25002Z"
               fill="#677D80"
             />
           </svg>
-          <span class="text-[#677D80] text-md leading-5">1/10</span>
+          <span class="text-[#677D80] text-md leading-5"
+            >{{ currentPage }}/{{ pagesCount }}</span
+          >
           <svg
             width="10"
             height="10"
             viewBox="0 0 10 10"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            class="ml-4"
+            class="ml-4 cursor-pointer"
+            @click="nextPage()"
           >
             <path
               d="M9.44 4.71502C9.4043 4.62295 9.35078 4.53885 9.2825 4.46752L5.5325 0.717517C5.46257 0.647588 5.37955 0.592118 5.28819 0.554272C5.19682 0.516427 5.09889 0.496948 5 0.496948C4.80027 0.496948 4.60873 0.576289 4.4675 0.717517C4.39757 0.787446 4.3421 0.870464 4.30426 0.96183C4.26641 1.0532 4.24693 1.15112 4.24693 1.25002C4.24693 1.44974 4.32627 1.64129 4.4675 1.78252L6.9425 4.25002H1.25C1.05109 4.25002 0.860322 4.32904 0.71967 4.46969C0.579018 4.61034 0.5 4.80111 0.5 5.00002C0.5 5.19893 0.579018 5.3897 0.71967 5.53035C0.860322 5.671 1.05109 5.75002 1.25 5.75002H6.9425L4.4675 8.21752C4.3972 8.28724 4.34141 8.37019 4.30333 8.46158C4.26526 8.55298 4.24565 8.65101 4.24565 8.75002C4.24565 8.84903 4.26526 8.94706 4.30333 9.03845C4.34141 9.12984 4.3972 9.21279 4.4675 9.28252C4.53722 9.35281 4.62017 9.40861 4.71157 9.44669C4.80296 9.48476 4.90099 9.50437 5 9.50437C5.09901 9.50437 5.19704 9.48476 5.28843 9.44669C5.37983 9.40861 5.46278 9.35281 5.5325 9.28252L9.2825 5.53252C9.35078 5.46119 9.4043 5.37708 9.44 5.28502C9.51501 5.10242 9.51501 4.89761 9.44 4.71502Z"
@@ -147,7 +151,11 @@
         <th class="py-[15px] text-center" v-if="socials">Social mentions</th>
         <th class="py-[15px] text-center" v-if="influencers">Influencers</th>
       </thead>
-      <tr v-for="row in users" :key="row.id" class="datatable__row flex py-3.5">
+      <tr
+        v-for="row in paginatedUsers"
+        :key="row.id"
+        class="datatable__row flex py-3.5"
+      >
         <td class="datatable__id flex items-center">
           <input type="checkbox" :value="row" v-model="watchList" />
           <span class="ml-4">{{ row.id }}</span>
@@ -365,6 +373,8 @@ export default {
       influencers: true,
       all: true,
       watchList: [],
+      perPage: 20,
+      currentPage: 1,
     };
   },
   methods: {
@@ -372,15 +382,30 @@ export default {
     addToWatchList(watchList) {
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
     },
+    nextPage(currentPage) {
+      this.currentPage++;
+    },
+    prevPage(currentPage) {
+      this.currentPage--;
+    },
   },
   mounted() {
     this.GET_USERS();
   },
   computed: {
     users() {
-      return this.$store.getters.USERS.filter((user) => {
+      return this.$store.getters.USERS;
+    },
+    filteredUsers() {
+      return this.$store.getters.USERS.filter((user, index) => {
         return user.name.toLowerCase().includes(this.search);
       });
+    },
+    paginatedUsers() {
+      let from = (this.currentPage - 1) * this.perPage;
+      let to = from + this.perPage;
+
+      return this.filteredUsers.slice(from, to);
     },
     watchListed() {
       return this.$store.getters.WATCHLIST.filter((user) => {
@@ -389,6 +414,9 @@ export default {
     },
     search() {
       return this.$store.state.search;
+    },
+    pagesCount() {
+      return Math.ceil(this.users.length / this.perPage);
     },
   },
   components: {},
