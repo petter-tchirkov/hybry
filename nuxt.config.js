@@ -25,8 +25,7 @@ export default {
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [
-  ],
+  
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -38,9 +37,14 @@ export default {
     '@nuxt/postcss8'
   ],
 
+  proxy: {
+    '/api': 'https://25c5-45-136-51-226.eu.ngrok.io'
+  },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/proxy'
   ],
 
   axios: {
@@ -49,7 +53,7 @@ export default {
       'Access-Control-Allow-Origin' : '*',
       'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     },
-    withCredentials: false,
+    proxy: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

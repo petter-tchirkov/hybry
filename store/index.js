@@ -39,7 +39,7 @@ export const getters = {
 
 export const actions = {
   async GET_USERS({commit}) {
-    axios.get('http://localhost:3000/users', {
+    axios.get('https://25c5-45-136-51-226.eu.ngrok.io/api/top', {
       'Access-Control-Allow-Credentials':true
     })
     .then((response) => {

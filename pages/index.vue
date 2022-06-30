@@ -8,9 +8,8 @@
 <script>
 import Metrics from "../components/Metrics.vue";
 import DataTable from "../components/DataTable.vue";
-import TableMenu from "../components/TableMenu.vue";
 export default {
   name: "IndexPage",
-  components: { Metrics, DataTable, TableMenu },
+  components: { Metrics, DataTable },
 };
 </script>

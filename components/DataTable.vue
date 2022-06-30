@@ -9,13 +9,15 @@
       <div class="menu__left flex flex-wrap lg:justify-start mb-4 lg:mb-0">
         <div class="menu__sort w-full flex-1 lg:w-[242px] flex lg:mr-5">
           <div
-            class="sort__all flex-grow px-7 py-3 border-r border-[#c7c6ca] bg-[#F1F1F3] cursor-pointer"
+            class="sort__all flex-grow px-7 py-3 border-r cursor-pointer"
+            :class="{ 'border-[#c7c6ca] bg-[#F1F1F3]': all }"
             @click="all = true"
           >
             <p>All NFTs</p>
           </div>
           <div
             class="sort__wish flex-grow px-7 py-3 cursor-pointer"
+            :class="{ 'border-[#c7c6ca] bg-[#F1F1F3]': !all }"
             @click="(all = false), addToWatchList()"
           >
             <p>Watchlist</p>
@@ -169,7 +171,7 @@
     </div>
     <table class="datatable w-full" v-if="all">
       <thead
-        class="datatable__header relative z-1"
+        class="datatable__header relative"
         :class="{
           'sticky w-full bg-white top-[116px] left-0 border-b': !topOfPage,
         }"
@@ -677,6 +679,7 @@ export default {
     display: grid;
     grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 555px;
     border-top: 1px solid #c7c6ca;
+    z-index: 1;
   }
   &__row {
     display: grid;
@@ -695,7 +698,7 @@ export default {
         top: -25%;
         left: -19%;
         width: 18px;
-        z-index: -1;
+        z-index: 0;
         height: 18px;
         background-image: url("../assets/images/star.svg");
         background-size: cover;
