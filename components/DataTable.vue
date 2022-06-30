@@ -300,7 +300,7 @@
               <path d="M3.4641 0.5L6.92823 5.5H0L3.4641 0.5Z" fill="#69B18C" />
             </svg>
 
-            {{ row.plus }}%
+            {{ row.plus.toFixed(3) }}%
           </span>
         </td>
         <td
@@ -493,8 +493,7 @@
             >
               <path d="M3.4641 0.5L6.92823 5.5H0L3.4641 0.5Z" fill="#69B18C" />
             </svg>
-
-            {{ row.plus }}%
+            {{ row.plus.toFixed(3) }}%
           </span>
         </td>
         <td
