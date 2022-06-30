@@ -47,13 +47,17 @@ export default {
     '@nuxtjs/proxy'
   ],
 
+  proxy: {
+    '/api': {
+      target: 'http://127.0.0.1:58693',
+      pathRewrite: {
+        '^/api' : '/api'
+        },
+    },
+  },
+
   axios: {
     baseURL: 'https://25c5-45-136-51-226.eu.ngrok.io/api',
-    headers: {
-      'Access-Control-Allow-Origin' : '*',
-      'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
-    },
-    proxy: true
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
