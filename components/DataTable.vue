@@ -269,12 +269,15 @@
         class="datatable__row flex py-3.5"
       >
         <td class="datatable__id flex items-center">
-          <input type="checkbox" :value="row" v-model="watchList" />
-          <span class="ml-4">{{ index + 1 }}</span>
+          <label class="flex items-center">
+            <input type="checkbox" :value="row" v-model="watchList" />
+            <span class="checkbox"></span>
+            <span class="ml-8">{{ index + 1 }}</span>
+          </label>
         </td>
         <td class="flex gap-2.5">
           <div class="datatable__avatar">
-            <img class="object-cover" :src="row.image" alt="" />
+            <img :src="row.image" alt="" />
           </div>
           <div class="datatable__name">
             <p>{{ row.name }}</p>
@@ -455,13 +458,16 @@
         </th>
       </thead>
       <tr
-        v-for="row in watchListed"
+        v-for="(row, index) in watchListed"
         :key="row.id"
         class="datatable__row flex py-3.5"
       >
         <td class="datatable__id flex items-center">
-          <input type="checkbox" :value="row" v-model="watchList" />
-          <span class="ml-4">{{ row.id }}</span>
+          <label class="flex items-center">
+            <input type="checkbox" :value="row" v-model="watchList" />
+            <span class="checkbox"></span>
+            <span class="ml-8">{{ index + 1 }}</span>
+          </label>
         </td>
         <td class="flex gap-2.5">
           <div class="datatable__avatar">
@@ -702,31 +708,26 @@ export default {
     grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 555px;
   }
   &__id {
-    input {
-      position: relative;
-      visibility: hidden;
-      &:before {
-        position: absolute;
-        content: "";
-        visibility: visible;
-        cursor: pointer;
-        top: -25%;
-        left: -19%;
-        width: 18px;
-        z-index: 0;
-        height: 18px;
-        background-image: url("../assets/images/star.svg");
-        background-size: cover;
-      }
-      &:checked {
-        &::before {
-          background-image: url("../assets/images/star-selected.svg");
-        }
-      }
-    }
     font-weight: 700;
     font-size: 18px;
     line-height: 24px;
+    position: relative;
+    .checkbox {
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      background: url("../assets/images/star.svg");
+      background-size: cover;
+    }
+    input {
+      position: absolute;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    input:checked + .checkbox {
+      background: url("../assets/images/star-selected.svg");
+      background-size: cover;
+    }
   }
   &__name {
     p {
