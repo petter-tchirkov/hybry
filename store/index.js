@@ -1079,12 +1079,12 @@ export const getters = {
 }
 
 export const actions = {
-  async GET_USERS({commit}) {
-    axios.get('https://25c5-45-136-51-226.eu.ngrok.io/api/top', {
-      'Access-Control-Allow-Credentials':true
-    })
-    .then((response) => {
-      commit('SET_USERS', response.data)
-    })
-  }
+  // async GET_USERS({commit}) {
+  //   axios.get('https://25c5-45-136-51-226.eu.ngrok.io/api/top', {
+  //     'Access-Control-Allow-Credentials':true
+  //   })
+  //   .then((response) => {
+  //     commit('SET_USERS', response.data)
+  //   })
+  // }
 }

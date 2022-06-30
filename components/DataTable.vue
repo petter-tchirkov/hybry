@@ -569,7 +569,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["GET_USERS"]),
     addToWatchList(watchList) {
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
     },
@@ -639,7 +638,6 @@ export default {
     this.watchList = this.$store.state.watchlist;
   },
   mounted() {
-    this.GET_USERS();
     this.onResize();
   },
   computed: {
