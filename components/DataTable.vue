@@ -1,26 +1,29 @@
 <template>
   <div class="table-component">
     <div
-      class="menu mb-4 flex justify-center lg:justify-between flex-wrap bg-white z-10"
+      class="menu mb-4 flex justify-center lg:justify-between flex-wrap bg-white"
       :class="{
-        'sticky mb-0 pb-4 w-full bg-white top-[56px] left-0': !topOfPage,
+        'sticky mb-0 py-4 w-full bg-white top-[41px] lg:top-[56px] left-0':
+          !topOfPage,
       }"
     >
-      <div class="menu__left flex flex-wrap lg:justify-start mb-4 lg:mb-0">
+      <div
+        class="menu__left flex-grow lg:flex-grow-0 flex flex-wrap lg:justify-start mb-4 lg:mb-0"
+      >
         <div class="menu__sort w-full flex-1 lg:w-[242px] flex lg:mr-5">
           <div
             class="sort__all flex-grow px-7 py-3 border-r cursor-pointer"
             :class="{ 'border-[#c7c6ca] bg-[#F1F1F3]': all }"
             @click="all = true"
           >
-            <p>All NFTs</p>
+            <p class="text-center lg:text-left">All NFTs</p>
           </div>
           <div
             class="sort__wish flex-grow px-7 py-3 cursor-pointer"
             :class="{ 'border-[#c7c6ca] bg-[#F1F1F3]': !all }"
             @click="(all = false), addToWatchList()"
           >
-            <p>Watchlist</p>
+            <p class="text-center lg:text-left">Watchlist</p>
           </div>
         </div>
         <div class="menu__metrics relative hidden lg:flex">
@@ -173,16 +176,19 @@
       <thead
         class="datatable__header relative"
         :class="{
-          'sticky w-full bg-white top-[116px] left-0 border-b': !topOfPage,
+          'sticky w-full bg-white top-[186px] lg:top-[116px] left-0 border-b':
+            !topOfPage,
         }"
       >
-        <th class="py-[15px] text-left">#</th>
-        <th class="py-[15px] text-left">Name</th>
+        <th class="py-[15px] text-left text-sm lg:text-md">#</th>
+        <th class="py-[15px] text-left text-sm lg:text-md">Name</th>
         <th
-          class="py-[15px] text-right lg:text-left flex items-center"
+          class="py-[15px] justify-end lg:justify-start flex items-center"
           v-if="followers || selected === 'followers'"
         >
-          <span class="mr-2" @click="sortByFollowers()">Followers</span>
+          <span class="text-sm lg:text-md mr-2" @click="sortByFollowers()"
+            >Followers</span
+          >
           <svg
             width="11"
             height="8"
@@ -197,10 +203,12 @@
           </svg>
         </th>
         <th
-          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          class="py-[15px] lg:text-center flex items-center justify-end lg:justify-center"
           v-if="audience || selected === 'audience quality'"
         >
-          <span class="mr-2" @click="sortByAudience()">Audience Quality</span>
+          <span class="text-sm lg:text-md mr-2" @click="sortByAudience()"
+            >Audience Quality</span
+          >
           <svg
             width="11"
             height="8"
@@ -215,10 +223,12 @@
           </svg>
         </th>
         <th
-          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          class="py-[15px] lg:text-center flex items-center justify-end lg:justify-center"
           v-if="socials || selected === 'social mentions'"
         >
-          <span class="mr-2" @click="sortBySocials()">Social Mentions</span>
+          <span class="text-sm lg:text-md mr-2" @click="sortBySocials()"
+            >Social Mentions</span
+          >
           <svg
             width="11"
             height="8"
@@ -233,10 +243,12 @@
           </svg>
         </th>
         <th
-          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          class="py-[15px] text-right lg:text-center flex items-center justify-end lg:justify-center"
           v-if="influencers || selected === 'influencers'"
         >
-          <span class="mr-2" @click="sortByInfluencers()">Influencers</span>
+          <span class="text-sm lg:text-md mr-2" @click="sortByInfluencers()"
+            >Influencers</span
+          >
           <svg
             width="11"
             height="8"
@@ -361,13 +373,15 @@
           'sticky w-full bg-white top-[116px] left-0 border-b': !topOfPage,
         }"
       >
-        <th class="py-[15px] text-left">#</th>
-        <th class="py-[15px] text-left">Name</th>
+        <th class="py-[15px] text-sm lg:text-md text-left">#</th>
+        <th class="py-[15px] text-sm lg:text-md text-left">Name</th>
         <th
-          class="py-[15px] text-right lg:text-left flex items-center"
+          class="py-[15px] text-right lg:text-left flex items-center justify-end lg:justify-start"
           v-if="followers || selected === 'followers'"
         >
-          <span class="mr-2" @click="sortByFollowersWatch()">Followers</span>
+          <span class="text-sm lg:text-md mr-2" @click="sortByFollowersWatch()"
+            >Followers</span
+          >
           <svg
             width="11"
             height="8"
@@ -382,10 +396,10 @@
           </svg>
         </th>
         <th
-          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          class="py-[15px] text-right lg:text-center flex items-center justify-end lg:justify-center"
           v-if="audience || selected === 'audience quality'"
         >
-          <span class="mr-2" @click="sortByAudienceWatch()"
+          <span class="text-sm lg:text-md mr-2" @click="sortByAudienceWatch()"
             >Audience Quality</span
           >
           <svg
@@ -402,10 +416,10 @@
           </svg>
         </th>
         <th
-          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          class="py-[15px] text-right lg:text-center flex items-center justify-end lg:justify-center"
           v-if="socials || selected === 'social mentions'"
         >
-          <span class="mr-2" @click="sortBySocialsWatch()"
+          <span class="text-sm lg:text-md mr-2" @click="sortBySocialsWatch()"
             >Social Mentions</span
           >
           <svg
@@ -422,10 +436,12 @@
           </svg>
         </th>
         <th
-          class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
+          class="py-[15px] text-right lg:text-center flex items-center justify-end lg:justify-center"
           v-if="influencers || selected === 'influencers'"
         >
-          <span class="mr-2" @click="sortByInfluencersWatch()"
+          <span
+            class="text-sm lg:text-md mr-2"
+            @click="sortByInfluencersWatch()"
             >Influencers</span
           >
           <svg
@@ -746,6 +762,7 @@ export default {
   line-height: 21px;
 }
 .menu {
+  z-index: 1;
   &__sort,
   .metric {
     border: 1px solid #c7c6ca;
