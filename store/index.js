@@ -23,8 +23,8 @@ export const mutations = {
   SEARCH_USERS: (state, search) => {
     state.search = search
   },
-  ADD_TO_WATCHLIST: (state, watchlist) => {
-    state.watchlist = watchlist
+  ADD_TO_WATCHLIST: (state, watchList) => {
+    state.watchlist = watchList
   }
 }
 

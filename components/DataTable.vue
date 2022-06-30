@@ -41,7 +41,7 @@
             </svg>
           </div>
           <div
-            class="metric__dropdown w-[230px] py-6 px-4 absolute mt-2 top-full left-0 bg-white"
+            class="metric__dropdown w-[230px] py-6 px-4 absolute mt-2 top-full left-0 bg-white z-20"
             v-show="isDropdownShown"
             @blur="isDropdownShown === false"
           >
@@ -169,7 +169,7 @@
     </div>
     <table class="datatable w-full" v-if="all">
       <thead
-        class="datatable__header relative z-10"
+        class="datatable__header relative z-1"
         :class="{
           'sticky w-full bg-white top-[116px] left-0 border-b': !topOfPage,
         }"
@@ -291,7 +291,7 @@
           </span>
         </td>
         <td
-          class="text-orange text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          class="datatable__audience text-orange text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
           v-if="audience || selected === 'audience quality'"
         >
           {{ row.audience_quality }}%
@@ -308,7 +308,7 @@
         >
           {{ row.influencers }}
         </td>
-        <td class="lg:flex gap-4 hidden">
+        <td class="datatable__sites lg:flex gap-4 hidden">
           <a
             :href="row.discord"
             class="discord border rounded-3xl flex gap-3 items-center px-8 py-3"
@@ -365,7 +365,7 @@
           class="py-[15px] text-right lg:text-left flex items-center"
           v-if="followers || selected === 'followers'"
         >
-          <span class="mr-2" @click="sortByFollowers()">Followers</span>
+          <span class="mr-2" @click="sortByFollowersWatch()">Followers</span>
           <svg
             width="11"
             height="8"
@@ -383,7 +383,9 @@
           class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
           v-if="audience || selected === 'audience quality'"
         >
-          <span class="mr-2" @click="sortByAudience()">Audience Quality</span>
+          <span class="mr-2" @click="sortByAudienceWatch()"
+            >Audience Quality</span
+          >
           <svg
             width="11"
             height="8"
@@ -401,7 +403,9 @@
           class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
           v-if="socials || selected === 'social mentions'"
         >
-          <span class="mr-2" @click="sortBySocials()">Social Mentions</span>
+          <span class="mr-2" @click="sortBySocialsWatch()"
+            >Social Mentions</span
+          >
           <svg
             width="11"
             height="8"
@@ -419,7 +423,9 @@
           class="py-[15px] text-right lg:text-center flex items-center lg:justify-center"
           v-if="influencers || selected === 'influencers'"
         >
-          <span class="mr-2" @click="sortByInfluencers()">Influencers</span>
+          <span class="mr-2" @click="sortByInfluencersWatch()"
+            >Influencers</span
+          >
           <svg
             width="11"
             height="8"
@@ -435,7 +441,7 @@
         </th>
       </thead>
       <tr
-        v-for="row in watchList"
+        v-for="row in watchListed"
         :key="row.id"
         class="datatable__row flex py-3.5"
       >
@@ -472,7 +478,7 @@
           </span>
         </td>
         <td
-          class="text-orange text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
+          class="datatable__audience text-orange text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
           v-if="audience || selected === 'audience quality'"
         >
           {{ row.audience_quality }}%
@@ -602,6 +608,22 @@ export default {
       this.paginatedUsers.sort((a, b) => b.influencers - a.influencers);
       this.$forceUpdate();
     },
+    sortByFollowersWatch() {
+      this.watchListed.sort((a, b) => b.followers - a.followers);
+      this.$forceUpdate();
+    },
+    sortByAudienceWatch() {
+      this.watchListed.sort((a, b) => b.audience_quality - a.audience_quality);
+      this.$forceUpdate();
+    },
+    sortBySocialsWatch() {
+      this.watchListed.sort((a, b) => b.social_mentions - a.social_mentions);
+      this.$forceUpdate();
+    },
+    sortByInfluencersWatch() {
+      this.watchListed.sort((a, b) => b.influencers - a.influencers);
+      this.$forceUpdate();
+    },
     handleScroll() {
       if (window.pageYOffset > 216) {
         if (this.topOfPage) this.topOfPage = false;
@@ -612,6 +634,7 @@ export default {
   },
   beforeMount() {
     window.addEventListener("scroll", this.handleScroll);
+    this.watchList = this.$store.state.watchlist;
   },
   mounted() {
     this.GET_USERS();
@@ -672,6 +695,7 @@ export default {
         top: -25%;
         left: -19%;
         width: 18px;
+        z-index: -1;
         height: 18px;
         background-image: url("../assets/images/star.svg");
         background-size: cover;
@@ -694,11 +718,24 @@ export default {
     }
   }
   &__followers {
+    grid-area: "followers";
     p {
       background: #3533ae;
       border-radius: 7px;
       width: auto;
     }
+  }
+  &__audience {
+    grid-area: "audience";
+  }
+  &__socials {
+    grid-area: "socials";
+  }
+  &__influencers {
+    grid-area: "influencers";
+  }
+  &__sites {
+    grid-column: 7;
   }
 }
 .discord,
