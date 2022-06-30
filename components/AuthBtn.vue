@@ -1,5 +1,5 @@
 <template>
-  <button class="bg-violet rounded-full text-white px-[30px] py-2.5">
+  <button class="bg-violet rounded-full text-white px-[30px] py-2">
     Sign in / Register
   </button>
 </template>

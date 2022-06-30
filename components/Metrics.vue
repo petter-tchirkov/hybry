@@ -2,7 +2,7 @@
   <div class="metrics grid grid-cols-2 lg:grid-cols-4 mb-10">
     <div class="metrics__item px-5 lg:px-9 py-4">
       <p class="metrics__name mb-1.5">Followers</p>
-      <p class="metrics__count mb-1 text-violet">366</p>
+      <p class="metrics__count mb-1 text-blue">366</p>
       <span class="metrics__percentage">56.68%</span>
     </div>
     <div class="metrics__item px-5 lg:px-9 py-4">
@@ -12,12 +12,12 @@
     </div>
     <div class="metrics__item px-5 lg:px-9 py-4">
       <p class="metrics__name mb-1.5">Social mentions</p>
-      <p class="metrics__count mb-1 text-violet">566</p>
+      <p class="metrics__count mb-1 text-blue">566</p>
       <span class="metrics__percentage">8.279%</span>
     </div>
     <div class="metrics__item px-5 lg:px-9 py-4">
       <p class="metrics__name mb-1.5">Influencers</p>
-      <p class="metrics__count mb-1 text-violet">189</p>
+      <p class="metrics__count mb-1 text-blue">189</p>
       <span class="metrics__percentage">1.321%</span>
     </div>
   </div>

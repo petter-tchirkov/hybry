@@ -3,7 +3,7 @@
     <div
       class="menu mb-4 flex justify-center lg:justify-between flex-wrap bg-white"
       :class="{
-        'sticky mb-0 py-4 w-full bg-white top-[41px] lg:top-[56px] left-0':
+        'sticky mb-0 py-4 w-full bg-white top-[41px] lg:top-[5%] left-0':
           !topOfPage,
       }"
     >
@@ -100,16 +100,14 @@
           </div>
         </div>
       </div>
-      <div
-        class="menu__right flex items-center justify-between w-full lg:w-auto"
-      >
+      <div class="menu__right flex items-center gap-[30px] w-full lg:w-auto">
         <div class="menu-mobile__metrics relative flex lg:hidden">
           <div class="metrics-mobile__dropdown">
             <select
               name="metrics"
               id="metrics"
               v-model="selected"
-              class="w-[205px] px-4 py-3 flex justify-between items-center cursor-pointer capitalize"
+              class="w-[205px] h-[48px] px-4 py-3 flex justify-between items-center cursor-pointer capitalize appearance-none bg-white"
             >
               <option
                 v-for="metric in metrics"
@@ -119,9 +117,10 @@
                 {{ metric.text }}
               </option>
             </select>
+            <span></span>
           </div>
         </div>
-        <div class="pagination flex items-center lg:mr-8">
+        <div class="pagination flex items-center">
           <svg
             width="10"
             height="10"
@@ -176,7 +175,7 @@
       <thead
         class="datatable__header relative"
         :class="{
-          'sticky w-full bg-white top-[186px] lg:top-[116px] left-0 border-b':
+          'sticky w-full bg-white top-[28%] lg:top-[13%] left-0 border-b':
             !topOfPage,
         }"
       >
@@ -266,13 +265,13 @@
       <tr
         v-for="(row, index) in paginatedAccounts"
         :key="row.index"
-        class="datatable__row flex py-3.5"
+        class="datatable__row flex py-4"
       >
         <td class="datatable__id flex items-center">
           <label class="flex items-center">
             <input type="checkbox" :value="row" v-model="watchList" />
             <span class="checkbox"></span>
-            <span class="ml-8">{{ index + 1 }}</span>
+            <span class="ml-8 text-lg">{{ index + 1 }}</span>
           </label>
         </td>
         <td class="flex gap-2.5">
@@ -285,11 +284,13 @@
           </div>
         </td>
         <td
-          class="datatable__followers flex items-center gap-6 flex-row-reverse lg:flex-row"
+          class="datatable__followers flex items-center gap-2 lg:gap-6 flex-row-reverse lg:flex-row"
           v-if="followers || selected === 'followers'"
         >
           <p class="py-2 px-4 text-white">{{ row.followers }}</p>
-          <span class="flex text-[#69B18C] text-sm items-center gap-2">
+          <span
+            class="flex text-[#69B18C] text-sm items-center gap-2 font-bold"
+          >
             <svg
               width="7"
               height="6"
@@ -324,7 +325,7 @@
         <td class="datatable__sites lg:flex gap-4 hidden">
           <a
             :href="row.discord"
-            class="discord border rounded-3xl flex gap-3 items-center px-8 py-3"
+            class="discord border rounded-3xl flex gap-3 items-center px-[30px] py-2 cursor-pointer"
           >
             <svg
               width="23"
@@ -341,7 +342,7 @@
           >
           <a
             :href="row.twitter"
-            class="twitter border rounded-3xl flex gap-3 items-center px-8 py-3"
+            class="twitter border rounded-3xl flex gap-3 items-center px-[30px] py-2 cursor-pointer"
           >
             <svg
               width="21"
@@ -359,7 +360,7 @@
           >
           <a
             :href="row.twitter"
-            class="text-white bg-violet border rounded-3xl flex gap-3 items-center px-8 py-3"
+            class="text-white bg-violet border rounded-3xl flex gap-3 items-center px-[30px] py-2 cursor-pointer"
             >Website</a
           >
         </td>
@@ -460,13 +461,13 @@
       <tr
         v-for="(row, index) in watchListed"
         :key="row.id"
-        class="datatable__row flex py-3.5"
+        class="datatable__row flex py-4"
       >
         <td class="datatable__id flex items-center">
           <label class="flex items-center">
             <input type="checkbox" :value="row" v-model="watchList" />
             <span class="checkbox"></span>
-            <span class="ml-8">{{ index + 1 }}</span>
+            <span class="ml-8 text-lg">{{ index + 1 }}</span>
           </label>
         </td>
         <td class="flex gap-2.5">
@@ -517,7 +518,7 @@
         <td class="hidden lg:flex gap-4">
           <a
             :href="row.discord"
-            class="discord border rounded-3xl flex gap-3 items-center px-8 py-3"
+            class="discord border rounded-3xl flex gap-3 items-center px-[30px] py-2 cursor-pointer"
           >
             <svg
               width="23"
@@ -534,7 +535,7 @@
           >
           <a
             :href="row.twitter"
-            class="twitter border rounded-3xl flex gap-3 items-center px-8 py-3"
+            class="twitter border rounded-3xl flex gap-3 items-center px-[30px] py-2 cursor-pointer"
           >
             <svg
               width="21"
@@ -552,7 +553,7 @@
           >
           <a
             :href="row.twitter"
-            class="text-white bg-violet border rounded-3xl flex gap-3 items-center px-8 py-3"
+            class="text-white bg-violet border rounded-3xl flex gap-3 items-center px-[30px] py-2 cursor-pointer"
             >Website</a
           >
         </td>
@@ -591,11 +592,22 @@ export default {
     addToWatchList(watchList) {
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
     },
-    nextPage(currentPage) {
-      this.currentPage++;
+    closeDropDown(e) {
+      if (!window.querySelector(".metric__dropdown").contains(e.target)) {
+        this.isDropdownShown = false;
+
+        window.removeEventListener("click", this.cloeDropDown);
+      }
+    },
+    nextPage(currentPage, pagesCount) {
+      if (this.currentPage < this.pagesCount) {
+        this.currentPage++;
+      }
     },
     prevPage(currentPage) {
-      this.currentPage--;
+      if (this.currentPage > 1) {
+        this.currentPage--;
+      }
     },
     onResize() {
       if (window.innerWidth < 960) {
@@ -713,10 +725,12 @@ export default {
     position: relative;
     .checkbox {
       position: absolute;
-      height: 18px;
-      width: 18px;
+      height: 24px;
+      width: 24px;
       background: url("../assets/images/star.svg");
-      background-size: cover;
+      background-size: auto;
+      background-repeat: no-repeat;
+      background-position: center center;
     }
     input {
       position: absolute;
@@ -725,7 +739,9 @@ export default {
     }
     input:checked + .checkbox {
       background: url("../assets/images/star-selected.svg");
-      background-size: cover;
+      background-size: auto;
+      background-repeat: no-repeat;
+      background-position: center center;
     }
   }
   &__name {
@@ -763,7 +779,7 @@ export default {
   line-height: 21px;
 }
 .menu {
-  z-index: 1;
+  z-index: 2;
   &__sort,
   .metric {
     border: 1px solid #c7c6ca;
@@ -776,6 +792,16 @@ export default {
   select {
     border: 1px solid #c7c6ca;
     border-radius: 7px;
+    position: relative;
+    & + span {
+      position: absolute;
+      top: 47%;
+      right: 8%;
+      width: 11px;
+      height: 7px;
+      background: url("../assets/images/arrow-down.svg");
+      background-size: cover;
+    }
   }
 }
 
