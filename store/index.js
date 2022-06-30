@@ -5,7 +5,7 @@ export const plugins = [createPersistedState()]
 
 export const state = () => ({
   isSidebarOpened: false,
-  users: [],
+  accounts: [],
   watchlist: [],
   search: ''
 });
@@ -14,13 +14,13 @@ export const mutations = {
   showHideSidebar(state) {
     state.isSidebarOpened = !state.isSidebarOpened
   },
-  SET_USERS: (state, users) => {
-    state.users = users
+  SET_ACCOUNTS: (state, accounts) => {
+    state.accounts = accounts
   },
-  SET_PAGINATED_USERS: (state, paginatedUsers) => {
-    state.paginatedUsers = paginatedUsers
+  SET_PAGINATED_ACCOUNTS: (state, paginatedAccounts) => {
+    state.paginatedAccounts = paginatedAccounts
   },
-  SEARCH_USERS: (state, search) => {
+  SEARCH_ACCOUNTS: (state, search) => {
     state.search = search
   },
   ADD_TO_WATCHLIST: (state, watchList) => {
@@ -29,8 +29,8 @@ export const mutations = {
 }
 
 export const getters = {
-  USERS(state) {
-    return state.users
+  ACCOUNTS(state) {
+    return state.accounts
   },
   WATCHLIST(state) {
     return state.watchlist
@@ -38,10 +38,16 @@ export const getters = {
 }
 
 export const actions = {
-  async GET_USERS({commit}) {
-    axios.get('https://localhost:3000')
+  async GET_ACCOUNTS({commit}) {
+    axios.get('https://c0b9-45-136-51-226.eu.ngrok.io/api/top', {
+      crossdomain: true,
+      crossorigin:true,
+      headers: {
+        'ngrok-skip-browser-warning': '1'
+      }
+    })
     .then((response) => {
-      commit('SET_USERS', response.data)
+      commit('SET_ACCOUNTS', response.data.accounts)
     })
   }
 }

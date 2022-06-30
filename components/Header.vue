@@ -102,7 +102,7 @@ export default {
       this.$store.commit("showHideSidebar");
     },
     setSearch() {
-      this.$store.commit("SEARCH_USERS", this.search);
+      this.$store.commit("SEARCH_ACCOUNTS", this.search);
     },
   },
   computed: {

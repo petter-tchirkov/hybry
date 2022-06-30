@@ -264,21 +264,17 @@
         </th>
       </thead>
       <tr
-        v-for="row in paginatedUsers"
-        :key="row.id"
+        v-for="(row, index) in paginatedAccounts"
+        :key="row.index"
         class="datatable__row flex py-3.5"
       >
         <td class="datatable__id flex items-center">
           <input type="checkbox" :value="row" v-model="watchList" />
-          <span class="ml-4">{{ row.id }}</span>
+          <span class="ml-4">{{ index + 1 }}</span>
         </td>
         <td class="flex gap-2.5">
           <div class="datatable__avatar">
-            <img
-              class="object-cover"
-              :src="require('../assets/images/' + row.image)"
-              alt=""
-            />
+            <img class="object-cover" :src="row.image" alt="" />
           </div>
           <div class="datatable__name">
             <p>{{ row.name }}</p>
@@ -469,7 +465,7 @@
         </td>
         <td class="flex gap-2.5">
           <div class="datatable__avatar">
-            <img :src="require('../assets/images/' + row.image)" alt="" />
+            <img :src="row.image" alt="" />
           </div>
           <div class="datatable__name">
             <p>{{ row.name }}</p>
@@ -576,6 +572,7 @@ export default {
       perPage: 20,
       currentPage: 1,
       topOfPage: true,
+      accountNumber: 1,
       metrics: [
         { text: "followers", value: true },
         { text: "audience quality", value: false },
@@ -585,7 +582,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["GET_USERS"]),
+    ...mapActions(["GET_ACCOUNTS"]),
     addToWatchList(watchList) {
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
     },
@@ -609,21 +606,23 @@ export default {
       this.$forceUpdate();
     },
     sortByFollowers() {
-      this.paginatedUsers.sort((a, b) => b.followers - a.followers);
+      this.paginatedAccounts.sort((a, b) => b.followers - a.followers);
       this.$forceUpdate();
     },
     sortByAudience() {
-      this.paginatedUsers.sort(
+      this.paginatedAccounts.sort(
         (a, b) => b.audience_quality - a.audience_quality
       );
       this.$forceUpdate();
     },
     sortBySocials() {
-      this.paginatedUsers.sort((a, b) => b.social_mentions - a.social_mentions);
+      this.paginatedAccounts.sort(
+        (a, b) => b.social_mentions - a.social_mentions
+      );
       this.$forceUpdate();
     },
     sortByInfluencers() {
-      this.paginatedUsers.sort((a, b) => b.influencers - a.influencers);
+      this.paginatedAccounts.sort((a, b) => b.influencers - a.influencers);
       this.$forceUpdate();
     },
     sortByFollowersWatch() {
@@ -655,23 +654,23 @@ export default {
     this.watchList = this.$store.state.watchlist;
   },
   mounted() {
-    this.GET_USERS();
+    this.GET_ACCOUNTS();
     this.onResize();
   },
   computed: {
-    users() {
-      return this.$store.getters.USERS;
+    accounts() {
+      return this.$store.getters.ACCOUNTS;
     },
-    filteredUsers() {
-      return this.$store.getters.USERS.filter((user, index) => {
-        return user.name.toLowerCase().includes(this.search);
+    filteredAccounts() {
+      return this.$store.getters.ACCOUNTS.filter((account) => {
+        return account.name.toLowerCase().includes(this.search);
       });
     },
-    paginatedUsers() {
+    paginatedAccounts() {
       let from = (this.currentPage - 1) * this.perPage;
       let to = from + this.perPage;
 
-      return this.filteredUsers.slice(from, to);
+      return this.filteredAccounts.slice(from, to);
     },
     watchListed() {
       return this.$store.getters.WATCHLIST.filter((user) => {
@@ -682,7 +681,7 @@ export default {
       return this.$store.state.search;
     },
     pagesCount() {
-      return Math.ceil(this.users.length / this.perPage);
+      return Math.ceil(this.accounts.length / this.perPage);
     },
   },
   components: {},
