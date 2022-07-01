@@ -1,7 +1,10 @@
 <template>
-  <main class="main mt-8 lg:mt-10 px-[15px] lg:px-[50px] pb-[100px]">
+  <main
+    class="main mt-8 lg:mt-10 px-[15px] lg:px-[50px] pb-[100px]"
+    :key="render"
+  >
     <Metrics />
-    <DataTable :key="key" />
+    <DataTable />
   </main>
 </template>
 
@@ -11,5 +14,18 @@ import DataTable from "../components/DataTable.vue";
 export default {
   name: "IndexPage",
   components: { Metrics, DataTable },
+  data() {
+    return {
+      render: 0,
+    };
+  },
+  methods: {
+    onResize() {
+      this.render++;
+    },
+  },
+  created() {
+    window.addEventListener("resize", this.onResize());
+  },
 };
 </script>
