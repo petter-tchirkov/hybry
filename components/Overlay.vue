@@ -1,9 +1,19 @@
 <template>
-  <div class="overlay w-screen h-screen fixed top-0 left-0 z-10"></div>
+  <div
+    class="overlay w-screen h-screen fixed top-0 left-0 z-10"
+    @click="showHideSidebar"
+  ></div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    showHideSidebar() {
+      this.$store.commit("showHideSidebar");
+      console.log("works");
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 <template>
-  <main class="main mt-8 lg:mt-10 px-[15px] lg:px-[50px]">
+  <main class="main mt-8 lg:mt-10 px-[15px] lg:px-[50px] pb-[100px]">
     <Metrics />
     <DataTable />
   </main>

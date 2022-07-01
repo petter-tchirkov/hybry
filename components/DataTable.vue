@@ -50,7 +50,7 @@
           <div
             class="metric__dropdown w-[230px] py-6 px-4 absolute mt-2 top-full left-0 bg-white z-20"
             v-show="isDropdownShown"
-            @blur="isDropdownShown === false"
+            tabindex="0"
           >
             <div class="metric__row mb-2.5" @click="selected === ''">
               <input
@@ -342,7 +342,7 @@
         >
           {{ row.influencers }}
         </td>
-        <td class="datatable__sites lg:flex gap-4 hidden">
+        <td class="datatable__sites xl:flex gap-4 hidden">
           <a
             :href="row.discord"
             class="discord border rounded-3xl flex gap-3 items-center px-[30px] py-2 cursor-pointer"
@@ -624,12 +624,8 @@ export default {
       console.log("added");
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
     },
-    closeDropDown(e) {
-      if (!window.querySelector(".metric__dropdown").contains(e.target)) {
-        this.isDropdownShown = false;
-
-        window.removeEventListener("click", this.cloeDropDown);
-      }
+    closeDropDown() {
+      this.isDropdownShown = false;
     },
     nextPage(currentPage, pagesCount) {
       if (this.currentPage < this.pagesCount) {
@@ -844,7 +840,16 @@ export default {
     }
   }
 }
-
+@media (max-width: 1200px) {
+  .datatable {
+    &__header {
+      grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+    &__row {
+      grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 1fr;
+    }
+  }
+}
 @media (max-width: 1024px) {
   .datatable {
     &__row,
