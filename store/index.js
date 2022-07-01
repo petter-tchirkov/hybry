@@ -5,6 +5,7 @@ export const plugins = [createPersistedState()]
 
 export const state = () => ({
   isSidebarOpened: false,
+  isDropdownOpened: false,
   accounts: [],
   watchlist: [],
   search: ''
@@ -13,6 +14,9 @@ export const state = () => ({
 export const mutations = {
   showHideSidebar(state) {
     state.isSidebarOpened = !state.isSidebarOpened
+  },
+  showHideDropdown(state) {
+    state.isDropdownOpened = !state.isDropdownOpened
   },
   SET_ACCOUNTS: (state, accounts) => {
     state.accounts = accounts

@@ -10,7 +10,6 @@ export default {
   methods: {
     showHideSidebar() {
       this.$store.commit("showHideSidebar");
-      console.log("works");
     },
   },
 };
