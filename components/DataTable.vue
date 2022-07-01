@@ -718,6 +718,7 @@ export default {
     this.GET_ACCOUNTS();
     window.addEventListener("scroll", this.handleScroll);
     this.watchList = this.$store.state.watchlist;
+    this.onResize();
   },
   beforeDestroy() {
     document.removeEventListener("click", this.close);
@@ -866,7 +867,7 @@ export default {
   .datatable {
     &__row,
     &__header {
-      grid-template-columns: 62px 1fr 1fr;
+      grid-template-columns: 62px 2fr 1fr;
     }
   }
 }

@@ -43,6 +43,11 @@
   src: url('~assets/fonts/RedHatDisplay-SemiBold.ttf') format('truetype');
 }
 
+html {
+  width: 100%;
+  height: 100%;
+}
+
 * {
   font-family: 'Red Hat Display', sans-serif;
   color: #242424;
