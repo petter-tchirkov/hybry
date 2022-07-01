@@ -286,10 +286,10 @@
         class="datatable__row flex py-4"
       >
         <td class="datatable__id flex items-center">
-          <label class="flex items-center">
+          <label class="flex items-center" @click="addToWatchList()">
             <input type="checkbox" :value="row" v-model="watchList" />
             <span class="checkbox"></span>
-            <span class="ml-8 text-lg" @click="addToWatchList()">{{
+            <span class="ml-8 text-lg">{{
               !/\d/.test(row.name) ? "1" : row.name.replace(/\D/g, "")
             }}</span>
           </label>
@@ -486,7 +486,7 @@
           :class="{ 'hidden hide': watchList.some((e) => e.name === row.name) }"
         >
           <td class="datatable__id flex items-center">
-            <label class="flex items-center">
+            <label class="flex items-center" @click="addToWatchList()">
               <input type="checkbox" :value="row" v-model="watchList" />
               <span class="checkbox"></span>
               <span class="ml-8 text-lg">{{
@@ -621,8 +621,8 @@ export default {
   methods: {
     ...mapActions(["GET_ACCOUNTS"]),
     addToWatchList() {
+      console.log("added");
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
-      this.$forceUpdate();
     },
     closeDropDown(e) {
       if (!window.querySelector(".metric__dropdown").contains(e.target)) {
@@ -704,14 +704,12 @@ export default {
       }
     },
   },
-  beforeMount() {
-    window.addEventListener("scroll", this.handleScroll);
-    this.watchList = this.$store.state.watchlist;
-  },
   mounted() {
     this.GET_ACCOUNTS();
     this.onResize();
     document.addEventListener("click", this.close);
+    window.addEventListener("scroll", this.handleScroll);
+    this.watchList = this.$store.state.watchlist;
   },
   beforeDestroy() {
     document.removeEventListener("click", this.close);
