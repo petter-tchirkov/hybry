@@ -25,7 +25,7 @@ export const mutations = {
   },
   ADD_TO_WATCHLIST: (state, watchList) => {
     state.watchlist = watchList
-  }
+  },
 }
 
 export const getters = {
