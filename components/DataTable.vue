@@ -33,7 +33,7 @@
             class="metric w-[230px] px-4 py-3 flex justify-between items-center cursor-pointer"
             @click="(isDropdownShown = !isDropdownShown), focusDropDown()"
           >
-            Metrics (4)
+            Metrics ({{ metricsCount }})
             <svg
               width="12"
               height="8"
@@ -61,6 +61,7 @@
                 id="followers"
                 name="followers"
                 v-model="followers"
+                @change="checkFollowers($event)"
               />
               <label for="followers">Followers</label>
             </div>
@@ -72,6 +73,7 @@
                 id="audience"
                 name="audience"
                 v-model="audience"
+                @change="checkAudience($event)"
               />
               <label for="audience">Audience Quality</label>
             </div>
@@ -83,6 +85,7 @@
                 id="social"
                 name="social"
                 v-model="socials"
+                @change="checkSocials($event)"
               />
               <label for="social">Social mentions</label>
             </div>
@@ -94,6 +97,7 @@
                 id="influencers"
                 name="influencers"
                 v-model="influencers"
+                @change="checkInfluencers($event)"
               />
               <label for="influencers">Influencers</label>
             </div>
@@ -620,6 +624,7 @@ export default {
       audienceSorted: false,
       socialsSorted: false,
       influencersSorted: false,
+      metricsCount: 4,
       metrics: [
         { text: "followers", value: true },
         { text: "audience quality", value: false },
@@ -638,6 +643,34 @@ export default {
     addToWatchList() {
       console.log("added");
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
+    },
+    checkAudience(e) {
+      if (e.target.checked === false) {
+        this.metricsCount--;
+      } else {
+        this.metricsCount++;
+      }
+    },
+    checkSocials(e) {
+      if (e.target.checked === false) {
+        this.metricsCount--;
+      } else {
+        this.metricsCount++;
+      }
+    },
+    checkInfluencers(e) {
+      if (e.target.checked === false) {
+        this.metricsCount--;
+      } else {
+        this.metricsCount++;
+      }
+    },
+    checkFollowers(e) {
+      if (e.target.checked === false) {
+        this.metricsCount--;
+      } else {
+        this.metricsCount++;
+      }
     },
     focusDropDown() {
       console.log("focused");
