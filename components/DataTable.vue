@@ -51,7 +51,8 @@
             class="metric__dropdown w-[230px] py-6 px-4 absolute mt-2 top-full left-0 bg-white z-20 outline-none"
             v-show="isDropdownShown"
             tabindex="0"
-            @focusout="isDropdownShown = false"
+            @focusout="handleFocusOut($event)"
+            ref="dropdDown"
           >
             <div class="metric__row mb-2.5" @click="selected === ''">
               <input
@@ -643,6 +644,11 @@ export default {
     addToWatchList() {
       console.log("added");
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
+    },
+    handleFocusOut(e) {
+      if (!e.currentTarget.contains(e.relatedTarget)) {
+        this.isDropdownShown = false;
+      }
     },
     checkAudience(e) {
       if (e.target.checked === false) {
