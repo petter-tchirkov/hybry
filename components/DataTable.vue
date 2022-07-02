@@ -302,7 +302,7 @@
             </label>
           </td>
           <td class="flex gap-2.5">
-            <div class="datatable__avatar">
+            <div class="datatable__avatar w-11 h-11">
               <img :src="row.image" alt="" />
             </div>
             <div class="datatable__name">
@@ -510,7 +510,7 @@
             </label>
           </td>
           <td class="flex gap-2.5">
-            <div class="datatable__avatar">
+            <div class="datatable__avatar w-11 h-11">
               <img :src="row.image" alt="" />
             </div>
             <div class="datatable__name">
