@@ -2,6 +2,9 @@
   <div
     class="overlay w-screen h-screen fixed top-0 left-0 z-10"
     @click="showHideSidebar"
+    @wheel.prevent
+    @touchmove.prevent
+    @scroll.prevent
   ></div>
 </template>
 
