@@ -1,7 +1,7 @@
 <template>
   <div class="table-component">
     <div
-      class="menu mb-4 flex justify-center lg:justify-between flex-wrap bg-white"
+      class="menu pb-4 flex justify-center lg:justify-between flex-wrap bg-white"
       :class="{
         'sticky mb-0 py-4 w-full bg-white top-[41px] lg:top-[5%] left-0':
           !topOfPage,
@@ -180,9 +180,9 @@
     </div>
     <table class="datatable w-full" v-if="all">
       <thead
-        class="datatable__header relative"
+        class="datatable__header"
         :class="{
-          'sticky w-full bg-white top-[28%] lg:top-[12%] left-0 border-b':
+          'fixed z-10 w-full top-[28%] bg-white px-[15px] lg:px-[50px] lg:top-[12.6%] left-0 border-b':
             !topOfPage,
         }"
       >
@@ -796,7 +796,6 @@ export default {
   &__header {
     display: grid;
     grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 555px;
-    border-top: 1px solid #c7c6ca;
     z-index: 1;
   }
   &__row {
@@ -865,6 +864,7 @@ export default {
   line-height: 21px;
 }
 .menu {
+  border-bottom: 1px solid #c7c6ca;
   z-index: 2;
   &__sort,
   .metric {
