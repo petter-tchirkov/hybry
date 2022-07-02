@@ -31,7 +31,7 @@
         <div class="menu__metrics relative hidden lg:flex lg:h-[42px]">
           <div
             class="metric w-[230px] px-4 py-3 flex justify-between items-center cursor-pointer"
-            @click="isDropdownShown = !isDropdownShown"
+            @click="(isDropdownShown = !isDropdownShown), focusDropDown()"
           >
             Metrics (4)
             <svg
@@ -48,9 +48,10 @@
             </svg>
           </div>
           <div
-            class="metric__dropdown w-[230px] py-6 px-4 absolute mt-2 top-full left-0 bg-white z-20"
+            class="metric__dropdown w-[230px] py-6 px-4 absolute mt-2 top-full left-0 bg-white z-20 outline-none"
             v-show="isDropdownShown"
             tabindex="0"
+            @focusout="isDropdownShown = false"
           >
             <div class="metric__row mb-2.5" @click="selected === ''">
               <input
@@ -638,8 +639,11 @@ export default {
       console.log("added");
       this.$store.commit("ADD_TO_WATCHLIST", this.watchList);
     },
-    closeDropDown() {
-      this.isDropdownShown = false;
+    focusDropDown() {
+      console.log("focused");
+      setTimeout(() => {
+        document.querySelector(".metric__dropdown").focus();
+      }, 300);
     },
     nextPage(currentPage, pagesCount) {
       if (this.currentPage < this.pagesCount) {
