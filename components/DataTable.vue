@@ -336,7 +336,7 @@
             class="datatable__audience text-orange text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
             v-if="audience || selected === 'audience quality'"
           >
-            {{ row.audience_quality }}%
+            {{ row.audience_quality.toFixed(3) }}%
           </td>
           <td
             class="text-violet text-lg leading-6 flex justify-end lg:justify-center items-center font-extrabold"
@@ -692,11 +692,11 @@ export default {
         this.currentPage--;
       }
     },
-    // addIndexToAccount() {
-    //   ACCOUNTS.forEach((account) => {
-    //     account.id = ACCOUNTS.indexOf(element);
-    //   });
-    // },
+    addIndexToAccount() {
+      this.$store.getters.ACCOUNTS.forEach((account) => {
+        account.id = this.$store.getters.ACCOUNTS.indexOf(account);
+      });
+    },
     onResize() {
       if (window.innerWidth < 960) {
         (this.selected = "followers"),
@@ -765,7 +765,7 @@ export default {
     window.addEventListener("scroll", this.handleScroll);
     this.watchList = this.$store.state.watchlist;
     this.onResize();
-    // this.addIndexToAccount();
+    this.addIndexToAccount();
   },
   beforeDestroy() {
     document.removeEventListener("click", this.close);

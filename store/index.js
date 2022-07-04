@@ -20,6 +20,9 @@ export const mutations = {
   },
   SET_ACCOUNTS: (state, accounts) => {
     state.accounts = accounts
+    state.accounts.forEach(account => {
+      account.id = (state.accounts.indexOf(account) + 1)
+    });
   },
   SET_PAGINATED_ACCOUNTS: (state, paginatedAccounts) => {
     state.paginatedAccounts = paginatedAccounts
