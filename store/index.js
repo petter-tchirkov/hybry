@@ -53,7 +53,7 @@ export const actions = {
     })
     .then((response) => {
       response.data.accounts.forEach(account => {
-        account.id = (state.response.data.accounts.indexOf(account) + 1)
+        account.id = (response.data.accounts.indexOf(account) + 1)
       });
     })
     .then((response) => {
