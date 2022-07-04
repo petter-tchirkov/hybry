@@ -296,9 +296,7 @@
             <label class="flex items-center">
               <input type="checkbox" :value="row" v-model="watchList" />
               <span class="checkbox" @click.once="addToWatchList()"></span>
-              <span class="ml-8 text-lg">{{
-                !/\d/.test(row.name) ? "1" : row.name.replace(/\D/g, "")
-              }}</span>
+              <span class="ml-8 text-lg">{{ row.id }}</span>
             </label>
           </td>
           <td class="flex gap-2.5">
@@ -684,16 +682,21 @@ export default {
         document.querySelector(".metric__dropdown").focus();
       }, 300);
     },
-    nextPage(currentPage, pagesCount) {
+    nextPage() {
       if (this.currentPage < this.pagesCount) {
         this.currentPage++;
       }
     },
-    prevPage(currentPage) {
+    prevPage() {
       if (this.currentPage > 1) {
         this.currentPage--;
       }
     },
+    // addIndexToAccount() {
+    //   ACCOUNTS.forEach((account) => {
+    //     account.id = ACCOUNTS.indexOf(element);
+    //   });
+    // },
     onResize() {
       if (window.innerWidth < 960) {
         (this.selected = "followers"),
@@ -762,6 +765,7 @@ export default {
     window.addEventListener("scroll", this.handleScroll);
     this.watchList = this.$store.state.watchlist;
     this.onResize();
+    // this.addIndexToAccount();
   },
   beforeDestroy() {
     document.removeEventListener("click", this.close);

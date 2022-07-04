@@ -43,15 +43,19 @@ export const getters = {
 
 export const actions = {
   async GET_ACCOUNTS({commit}) {
-    axios.get('https://c0b9-45-136-51-226.eu.ngrok.io/api/top', {
+    axios.get('https://d022-45-136-51-226.eu.ngrok.io/api/top', {
       crossdomain: true,
       crossorigin:true,
       headers: {
-        'ngrok-skip-browser-warning': '1'
+        'ngrok-skip-browser-warning': '1',
+        "Access-Control-Allow-Origin": "*"
       }
     })
     .then((response) => {
       commit('SET_ACCOUNTS', response.data.accounts)
+    })
+    .catch((error) => {
+      console.log(error);
     })
   }
 }
