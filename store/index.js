@@ -20,9 +20,6 @@ export const mutations = {
   },
   SET_ACCOUNTS: (state, accounts) => {
     state.accounts = accounts
-    state.accounts.forEach(account => {
-      account.id = (state.accounts.indexOf(account) + 1)
-    });
   },
   SET_PAGINATED_ACCOUNTS: (state, paginatedAccounts) => {
     state.paginatedAccounts = paginatedAccounts
@@ -53,6 +50,11 @@ export const actions = {
         'ngrok-skip-browser-warning': '1',
         "Access-Control-Allow-Origin": "*"
       }
+    })
+    .then((response) => {
+      response.data.accounts.forEach(account => {
+        account.id = (state.response.data.accounts.indexOf(account) + 1)
+      });
     })
     .then((response) => {
       commit('SET_ACCOUNTS', response.data.accounts)
