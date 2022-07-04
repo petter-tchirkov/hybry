@@ -55,8 +55,6 @@ export const actions = {
       response.data.accounts.forEach(account => {
         account.id = (response.data.accounts.indexOf(account) + 1)
       });
-    })
-    .then((response) => {
       commit('SET_ACCOUNTS', response.data.accounts)
     })
     .catch((error) => {
