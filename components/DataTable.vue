@@ -1,7 +1,7 @@
 <template>
   <div class="table-component">
     <div
-      class="menu pb-4 flex justify-center lg:justify-between flex-wrap bg-white"
+      class="menu px-[15px] lg:px-0 pb-4 flex justify-center lg:justify-between flex-wrap bg-white"
       :class="{
         'sticky mb-0 py-4 w-full bg-white top-[41px] lg:top-[5%] left-0':
           !topOfPage,
@@ -183,7 +183,7 @@
       <thead
         class="datatable__header"
         :class="{
-          'fixed z-10 w-full top-[28%] bg-white px-[15px] lg:px-[50px] lg:top-[12.6%] left-0 border-b':
+          'fixed z-10 w-full top-[27.5%] bg-white px-[15px] lg:px-[50px] lg:top-[12.6%] left-0 border-b':
             !topOfPage,
         }"
       >
